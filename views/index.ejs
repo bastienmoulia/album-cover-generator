@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <title>Album cover generator</title>
+  <style>
+    img {
+      width: <%= size %>cm;
+      height: <%= size %>cm;
+      margin: 0;
+      display: none;
+    }
+    .show {
+      display: inline-block;
+    }
+    @media print {
+      .no-print, .no-print *
+      {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body onload="load();">
+  <div class="no-print">
+    <form>
+      <label for="size">Size in cm</label>
+      <input type="number" id="size" name="size" step="0.1" value="<%= size %>">
+      <input type="submit" value="Refresh">
+    </form>
+    <div>
+    <%
+      for(var i = 0 ; i < img.length ; i++) {
+    %>
+      <label>
+        <input type="checkbox" name="<%= img[i] %>" onchange="check(this)"><%= img[i] %>
+      </label>
+    <% } %>
+    </div>
+    <button onclick="selectNone();">Select none</button>
+    <button onclick="selectAll();">Select all</button>
+    <button onclick="window.print();">Print</button>
+  </div>
+  <%
+    for(var i = 0 ; i < img.length ; i++) {
+  %>
+  <img src="img/<%= img[i] %>" alt="<%= img[i] %>" title="<%= img[i] %>">
+  <% } %>
+  <script>
+    // au chargement, on coche ceux du localStorage, ou on met tout si vide
+    function load() {
+      console.log("load");
+      let images = JSON.parse(localStorage.getItem("images"));
+      console.log("images", images);
+      if (!images) {
+        selectAll();
+      } else {
+        refresh();
+      }
+    }
+
+    // quand on clic une checkbox, on met a jour le localstorage
+    function check(checkboxElem) {
+      let images = JSON.parse(localStorage.getItem("images"));
+      let index = images.indexOf(checkboxElem.name);
+      if (checkboxElem.checked) {
+        if (index === -1) {
+          images.push(checkboxElem.name);
+          localStorage.setItem("images", JSON.stringify(images));
+          refresh();
+        }
+      } else {
+        if (index > -1) {
+          images.splice(index, 1);
+          localStorage.setItem("images", JSON.stringify(images));
+          refresh();
+        }
+      }
+    }
+
+    // quand on clic le btn none, on vide le local storage
+    function selectNone() {
+      console.log("none");
+      localStorage.setItem("images", "[]");
+      refresh();
+    }
+
+    // quand on clic le btn all, on met tout dans le local storage
+    function selectAll() {
+      console.log("all");
+      images = [<% for(var i = 0 ; i < img.length ; i++) { %>"<%= img[i] %>", <% } %>]
+      console.log("images", images);
+      localStorage.setItem("images", JSON.stringify(images));
+      refresh();
+    }
+
+    // refresh, on cache les img en fonction du contenu du localstorage
+    function refresh() {
+      console.log("refresh");
+      const imgs = document.querySelectorAll("img");
+      imgs.forEach((img) => {
+        img.className = "";
+      });
+      const checkboxs = document.querySelectorAll("input[type='checkbox']");
+      checkboxs.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      const images = JSON.parse(localStorage.getItem("images"));
+      images.forEach((image) => {
+        const img = document.querySelector("img[title='"+ image +"']");
+        img.className = "show";
+        const checkbox = document.querySelector("input[name='"+ image +"']");
+        checkbox.checked = true;
+      });
+    }
+  </script>
+</body>
+</html>
