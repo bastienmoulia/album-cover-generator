@@ -1,6 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
+const isImage = require('is-image');
+const sizeOf = require('image-size');
 
 app.use('/img', express.static(__dirname + '/img'));
 
@@ -11,8 +13,14 @@ app.get('/', function (req, res) {
     size = req.query.size;
   }
   fs.readdirSync('./img/').forEach(file => {
-    files.push(file);
+    if (isImage('./img/' + file)) {
+      files.push({
+        img: file,
+        size: sizeOf('./img/' + file).width
+      });
+    }
   })
+  console.log(files);
   res.render('index.ejs', {
     size: size,
     img: files

@@ -14,6 +14,9 @@
     .show {
       display: inline-block;
     }
+    .too-small {
+      color: red;
+    }
     @media print {
       .no-print, .no-print *
       {
@@ -33,19 +36,19 @@
     <%
       for(var i = 0 ; i < img.length ; i++) {
     %>
-      <label>
-        <input type="checkbox" name="<%= img[i] %>" onchange="check(this)"><%= img[i] %>
+      <label title="<%= img[i].size %>px"<% if(img[i].size < 900) { %> class="too-small"<% } %>>
+        <input type="checkbox" name="<%= img[i].img %>" onchange="check(this)"><%= img[i].img %>
       </label>
     <% } %>
     </div>
     <button onclick="selectNone();">Select none</button>
-    <button onclick="selectAll();">Select all</button>
+    <button onclick="selectAll();">Select all (<%= img.length %>)</button>
     <button onclick="window.print();">Print</button>
   </div>
   <%
     for(var i = 0 ; i < img.length ; i++) {
   %>
-  <img src="img/<%= img[i] %>" alt="<%= img[i] %>" title="<%= img[i] %>">
+  <img src="img/<%= img[i].img %>" alt="<%= img[i].img %>" title="<%= img[i].img %>">
   <% } %>
   <script>
     // au chargement, on coche ceux du localStorage, ou on met tout si vide
@@ -89,7 +92,7 @@
     // quand on clic le btn all, on met tout dans le local storage
     function selectAll() {
       console.log("all");
-      images = [<% for(var i = 0 ; i < img.length ; i++) { %>"<%= img[i] %>", <% } %>]
+      images = [<% for(var i = 0 ; i < img.length ; i++) { %>"<%= img[i].img %>", <% } %>]
       console.log("images", images);
       localStorage.setItem("images", JSON.stringify(images));
       refresh();
