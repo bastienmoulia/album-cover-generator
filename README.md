@@ -6,7 +6,7 @@
 - Launch `npm install` to install the dependencies
 - Launch `npm start` to start the server
 - Browse to http://localhost:3000
-- Select the image you want to print
+- Select the image you want to print (images in red are too small)
 - Change the size of images if needed
 - Click the **Print** button to open the browser print dialog
 
