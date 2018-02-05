@@ -16,7 +16,8 @@ app.get('/', function (req, res) {
     if (isImage('./img/' + file)) {
       files.push({
         img: file,
-        size: sizeOf('./img/' + file).width
+        width: sizeOf('./img/' + file).width,
+        height: sizeOf('./img/' + file).height
       });
     }
   })

@@ -14,7 +14,7 @@
     .show {
       display: inline-block;
     }
-    .too-small {
+    .error {
       color: red;
     }
     @media print {
@@ -36,7 +36,7 @@
     <%
       for(var i = 0 ; i < img.length ; i++) {
     %>
-      <label title="<%= img[i].size %>px"<% if(img[i].size < 900) { %> class="too-small"<% } %>>
+      <label title="<%= img[i].width %>x<%= img[i].height %>px"<% if(img[i].width < 900 || img[i].width !== img[i].height) { %> class="error"<% } %>>
         <input type="checkbox" name="<%= img[i].img %>" onchange="check(this)"><%= img[i].img %>
       </label>
     <% } %>
