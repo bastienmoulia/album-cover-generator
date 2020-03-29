@@ -10,9 +10,9 @@
   "author": "Bastien Moulia <bastienmoulia@gmail.com> (https://github.com/bastienmoulia/)",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "image-size": "^0.6.2",
-    "is-image": "^2.0.0"
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "image-size": "^0.8.3",
+    "is-image": "^3.0.0"
   }
 }

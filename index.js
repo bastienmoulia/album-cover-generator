@@ -6,6 +6,8 @@ const sizeOf = require('image-size');
 
 app.use('/img', express.static(__dirname + '/img'));
 
+app.use('/wall', express.static(__dirname + '/index.html'));
+
 app.get('/', function (req, res) {
   let files = [];
   let size = 14.1;
